@@ -126,7 +126,7 @@ label {
 
     & > .form-group {
         flex: 1;
-        width: 0%; // forces individual elements to not break past the max-width needed for equal widths
+        width: 1%; // forces individual elements to not break past the max-width needed for equal widths
     }
 }
 
