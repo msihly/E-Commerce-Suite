@@ -1,0 +1,13 @@
+.listings-preview {
+    padding: 0;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    .tab-container { height: auto; }
+
+    .card { background-color: $black-2; }
+}

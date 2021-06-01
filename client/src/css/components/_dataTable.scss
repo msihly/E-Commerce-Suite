@@ -1,0 +1,166 @@
+.data-table {
+    border: 2px solid var(--foreground-color);
+    border-radius: 0.4rem;
+    border-collapse: unset;
+    border-spacing: 0;
+    max-width: max-content;
+    width: stretch;
+
+    &.delete-mode tbody tr:hover {
+        background-color: $red-3;
+        cursor: url("../../media/icons/trashcan-white.svg"), auto;
+    }
+
+    &.highlight-mode tbody tr:hover {
+        background-color: var(--accent-color-highlight);
+        cursor: pointer;
+    }
+
+    th, td {
+        padding: 0.4em 0.7em;
+        white-space: nowrap;
+    }
+
+    thead th {
+        position: sticky;
+        top: 0;
+        border-color: var(--accent-color);
+        background-color: var(--accent-color);
+        z-index: 5;
+        cursor: pointer;
+        user-select: none;
+
+        &::before, &::after {
+            content: $symbol-arrow-down;
+            visibility: hidden;
+        }
+
+        &:not(:last-of-type) { border-right: 2px solid var(--accent-color-highlight); }
+
+        &:first-of-type { border-top-left-radius: 0.3rem; }
+
+        &:last-of-type { border-top-right-radius: 0.3rem; }
+
+        &.sort {
+            &-desc, &-asc {
+                display: inline-flex;
+                justify-content: space-between;
+                width: 100%;
+
+                &::after { visibility: visible; }
+            }
+
+            &-desc::after { content: $symbol-arrow-down; }
+
+            &-asc::after { content: $symbol-arrow-up; }
+        }
+    }
+
+    tbody {
+        tr {
+            &:nth-of-type(odd) {
+                background-color: var(--foreground-color);
+
+                td { border-color: var(--foreground-color-highlight); }
+            }
+
+            &.highlighted { background-color: var(--accent-color-highlight); }
+        }
+
+        td {
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &:not(:last-of-type) { border-right: 2px solid var(--foreground-color); }
+
+            &.input-cell {
+                padding: 0;
+                background: var(--accent-color-highlight);
+
+                form { height: 100%; }
+
+                .form-group {
+                    margin: 0;
+                    padding: 0;
+                    height: inherit;
+                }
+
+                input, .dropdown {
+                    border: none;
+                    border-radius: inherit;
+                    margin: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: transparent;
+                    font-size: inherit;
+                    text-align: center;
+                }
+
+                input {
+                    padding: 0;
+                }
+            }
+        }
+
+        .th, .td {
+            min-width: fit-content;
+            max-width: 10em;
+
+            &-currency {
+                position: relative;
+                min-width: 8em;
+                max-width: 8em;
+                text-align: right;
+
+                &::before {
+                    content: "$";
+                    position: absolute;
+                    top: 0;
+                    left: 0.5em;
+                    padding: 0.4em 0;
+                }
+            }
+
+            &-date {
+                min-width: 8em;
+                max-width: 8em;
+            }
+
+            &-number {
+                width: min-content;
+                max-width: 8em;
+            }
+
+            &-text {
+                min-width: 7em;
+                max-width: 9em;
+            }
+        }
+    }
+}
+
+.main-table { margin-bottom: 1rem; }
+
+.sub-table {
+    align-items: flex-end;
+    flex: none;
+    margin-bottom: 0.5rem;
+}
+
+.summary {
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    padding: 1rem;
+    background-color: var(--foreground-color);
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: inherit;
+    max-width: inherit;
+    max-height: 15rem;
+}

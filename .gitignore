@@ -1,0 +1,27 @@
+# dependencies
+*node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+.old/
+.ignore*
+
+# production
+build/
+
+# misc
+.vscode/
+_components/
+# sql/
+
+.DS_Store
+*.env
+*.env.*
+npm-debug.log*
+*.eslintcache
+
+*.psd
+*.ai
+*.db

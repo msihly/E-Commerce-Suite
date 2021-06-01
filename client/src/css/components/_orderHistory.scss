@@ -1,0 +1,14 @@
+.order-history {
+    @extend .cart;
+
+    .order {
+        @extend .cart-item;
+    }
+
+    .order-item {
+        @extend .cart-item;
+        background-color: var(--background-color);
+
+        .item-price { padding-right: 1em; }
+    }
+}

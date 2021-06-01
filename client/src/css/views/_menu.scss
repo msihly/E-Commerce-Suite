@@ -1,0 +1,47 @@
+@import "../components/navbar";
+@import "../components/expando";
+@import "../components/card";
+@import "../components/cart";
+@import "../components/orderHistory";
+
+.sale-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: $black-2;
+
+    .logo-bar {
+        display: flex;
+        justify-content: center;
+        order: 0;
+        padding-top: 0.5rem;
+        height: 3.9rem;
+        background-color: $black-1;
+        // box-shadow: 0 0 10px 0 rgba($white-3, 0.7);
+        z-index: 5;
+
+        img {
+            height: 4.2rem;
+            z-index: 10;
+        }
+    }
+
+    main {
+        flex: 1;
+        order: 1;
+        height: stretch;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            &, &-track, &-corner {
+                width: 0;
+                height: 0;
+                background: none;
+            }
+        }
+    }
+
+    .navbar {
+        @extend .navbar;
+        order: 2;
+    }
+}

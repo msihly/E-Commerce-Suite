@@ -1,0 +1,122 @@
+.cart {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .cart-item {
+        display: flex;
+        flex-flow: row nowrap;
+        border-radius: 6px;
+        margin: 0.7em 0.5em;
+        height: 6rem;
+        background-color: var(--foreground-color-highlight);
+
+        .item {
+            &-image {
+                border-top-left-radius: inherit;
+                border-bottom-left-radius: inherit;
+                width: 6rem;
+                background-color: var(--foreground-color-highlight);
+                object-fit: cover;
+                text-align: center;
+            }
+
+            &-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                flex: 1;
+                padding: 0.5em 0.3em 0.5em 1em;
+            }
+
+            &-name {
+                margin-bottom: 0.2em;
+                font-size: 1.3em;
+                line-height: 1;
+            }
+
+            &-flavor {
+                margin-bottom: 0.2em;
+                font-weight: 400;
+            }
+
+            &-price {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0.3em;
+                color: $green-2;
+                font-size: 1.4em;
+
+                &:last-of-type { padding-right: 1em; }
+            }
+
+            &-quantity {
+                font-weight: 400;
+                font-size: 0.9em;
+            }
+
+            &-buttons {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 0.7em;
+                fill: var(--accent-fill-color);
+
+                span {
+                    display: flex;
+                    border-radius: 50%;
+                    padding: 0.7rem;
+                    background-color: var(--foreground-color);
+                    transition: all 0.2s ease-in-out;
+                    cursor: pointer;
+                    -webkit-tap-highlight-color: transparent;
+
+                    &:not(:last-of-type) { margin-bottom: 0.3rem; }
+
+                    svg {
+                        width: 1em;
+                        height: 1em;
+                    }
+                }
+            }
+        }
+    }
+
+    .order-container {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 2px solid var(--foreground-color);
+        margin-top: auto;
+        padding: 0.8rem 1rem;
+        background-color: $black-1;
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.3rem;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        button {
+            width: 100%;
+            color: $white-3;
+            background: linear-gradient(135deg, $blue-1, $blue-3, $blue-1);
+            font-size: 1.5em;
+            font-weight: 600;
+            text-transform: uppercase;
+
+            &.disabled {
+                background: $grey-2;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .chevron {
+        fill: $white-3;
+        margin: 0 auto;
+    }
+}

@@ -1,0 +1,38 @@
+.accordian {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: auto;
+}
+
+.expando {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid $white-3;
+    border-bottom: 1px solid $white-3;
+    height: 8rem;
+    width: 100vw;
+    background-color: var(--foreground-color);
+    overflow: hidden;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        filter: blur(3px) brightness(0.8);
+        transition: all 0.2s ease-in-out;
+    }
+
+    span {
+        position: absolute;
+        color: rgba(white, 0.8);
+        font-size: 2em;
+        font-weight: 600;
+        text-shadow: 0 0 8px rgba(black, 0.8);
+        text-transform: uppercase;
+    }
+}

@@ -1,0 +1,20 @@
+.notFound {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: $black-3;
+    overflow: hidden;
+
+    .heading {
+        font-size: 12em;
+        color: $blue-2;
+    }
+
+    .subheading {
+        font-size: 3em;
+        color: $white-2;
+    }
+}
