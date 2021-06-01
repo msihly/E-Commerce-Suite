@@ -107,7 +107,8 @@ try {
         if (newPassword !== passwordConf) return res.send({ success: false, message: "Password confirmation does not match" });
         for (const key in req.body) if (!validateForm(reqs, key, req.body[key], res, refreshedAccessToken)) return;
 
-        if (!authenticatePassword({ password: currentPassword, userId, res, refreshedAccessToken })) return;
+        const isCurPasswordValid = await authenticatePassword({ password: currentPassword, userId, res, refreshedAccessToken });
+        if (!isCurPasswordValid) return;
 
         if (!validatePassword({ password: newPassword, res, refreshedAccessToken })) return;
 
