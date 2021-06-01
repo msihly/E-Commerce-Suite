@@ -1,5 +1,5 @@
-CREATE DATABASE highline;
-USE highline;
+CREATE DATABASE ecommsuite;
+USE ecommsuite;
 
 /* --------------------------------- TABLES --------------------------------- */
 CREATE TABLE IF NOT EXISTS user (
