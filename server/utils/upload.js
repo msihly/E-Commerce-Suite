@@ -15,20 +15,20 @@ const extensions = ["jpg", "jpeg", "png"];
 const maxImageSize = 2097152;
 
 exports.uploadPhoto = async (photo) => {
-    if (photo === undefined) return { photoId: null, photoUrl: null };
+    if (photo === undefined) return { photoId: null, photoUrl: null, photoName: null, photoSize: 0 };
 
-    const { buffer, mimetype, originalname: originalName, size } = photo;
+    const { buffer, mimetype, originalname: originalName, size: photoSize } = photo;
     const ext = originalName.split(".").pop();
 
-    if (!extensions.includes(ext)) throw new Error(`Image extension not allowed: ${originalName} | ${mimetype}`);
-    if (size > maxImageSize) throw new Error(`Image size exceeds limit: ${originalName} | ${size} bytes`);
+    if (!extensions.includes(ext)) throw new Error(`Image extension not allowed: ${mimetype}`);
+    if (photoSize > maxImageSize) throw new Error(`Image size [${formatBytes(photoSize)}] cannot exceed ${formatBytes(maxImageSize)}`);
 
     const photoHash = hash("md5", buffer);
 
     const existingEntries = await db.getPhotos({ photoHash });
     if (existingEntries.length > 0) {
-        const { photoId, photoUrl } = existingEntries[0];
-        return { photoId, photoUrl };
+        const { photoId, photoUrl, originalName } = existingEntries[0];
+        return { photoId, photoUrl, originalName };
     }
 
     const path = `uploads/${photoHash.substr(0, 2)}/${photoHash.substr(2, 2)}/${photoHash}.${ext}`;
@@ -37,5 +37,5 @@ exports.uploadPhoto = async (photo) => {
     await s3.putObject({ Bucket: S3_BUCKET, Key: path, Body: buffer, ACL: "public-read" }).promise();
     const photoId = await db.uploadPhoto({ originalName, photoUrl, photoHash });
 
-    return { photoId, photoUrl };
+    return { photoId, photoUrl, originalName, photoSize };
 };

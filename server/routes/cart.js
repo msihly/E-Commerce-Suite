@@ -46,7 +46,7 @@ try {
     app.delete("/api/cart", handleErrors(async (req, res) => {
         const refreshedAccessToken = await authenticateUser(req);
 
-        await db.emptyCart(req.user.userId);
+        await db.emptyCart({ userId: req.user.userId });
 
         return res.send({ success: true, refreshedAccessToken });
     }));

@@ -9,6 +9,7 @@ import * as Media from "media";
 
 const CHECKOUT_MODAL_ID = "checkout-modal";
 const [ORDER_NEW, ORDER_CONFIRMED, ORDER_FAILED] = ["ORDER_NEW", "ORDER_CONFIRMED", "ORDER_FAILED"];
+const ORDER_MINIMUM = 30;
 
 const Cart = () => {
     const history = useHistory();
@@ -96,8 +97,8 @@ const Cart = () => {
                     <span>{`$ ${formatData(cartTotal, "currency")}`}</span>
                 </div>
 
-                {cartTotal < 100
-                    ? <button className="disabled">{`$ ${formatData(100 - cartTotal, "currency")} more required`}</button>
+                {cartTotal < ORDER_MINIMUM
+                    ? <button className="disabled">{`$ ${formatData(ORDER_MINIMUM - cartTotal, "currency")} more required`}</button>
                     : <button onClick={openCheckout}>Checkout</button>
                 }
 

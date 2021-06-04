@@ -107,6 +107,7 @@ try {
             const [listings, products] = await Promise.all([db.getListings(req.user), db.getProducts(req.user)]);
 
             const { deletedItems, updatedItems } = validateCart(lineItems, products, listings);
+            console.log({ deletedItems, updatedItems });
 
             if (deletedItems.length > 0 || updatedItems.length > 0) {
                 if (deletedItems.length > 0) await db.deleteCartItems(deletedItems.map(e => e.cartItemId));
@@ -124,7 +125,10 @@ try {
 
         const orderId = await db.addOrder({ orderDate, customerId, employeeId, lineItems });
 
-        if (req.body.isFromCart) pushNotification(`Order #${orderId} - ${new Date(orderDate).toLocaleString("en-US", { timeZone: "America/New_York" })}`);
+        if (req.body.isFromCart) {
+            await db.emptyCart({ customerId });
+            pushNotification(`Order #${orderId} - ${new Date(orderDate).toLocaleString("en-US", { timeZone: "America/New_York" })}`);
+        }
 
         return res.send({
             success: true,

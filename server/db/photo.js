@@ -13,8 +13,7 @@ exports.getPhotos = async ({ photoHash, photoIds = [] }) => {
 };
 
 exports.uploadPhoto = async ({ originalName, photoUrl, photoHash }) => {
-    const sql = `INSERT INTO photo (dateCreated, originalName, photoUrl, photoHash)
-                    VALUES (?, ?, ?, ?);`;
+    const sql = `INSERT INTO photo (dateCreated, originalName, photoUrl, photoHash) VALUES (?, ?, ?, ?);`;
     const [{ insertId: photoId },] = await conn.query(sql, [getIsoDate(), originalName, photoUrl, photoHash]);
     return photoId;
 };

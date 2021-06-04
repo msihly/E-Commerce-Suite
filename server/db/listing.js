@@ -53,14 +53,16 @@ exports.getListings = async ({ accessLevel, listingIds = [], userId }) => {
     return listings.map(l => ({ ...castObjectNumbers(l, "listingRates") }));
 };
 
-exports.updateListing = async ({ hasWeights = 0, listingRates, listingId, listingState, photoId = null, productId, sectionId, strainType = null, title }) => {
+exports.updateListing = async ({ hasWeights = 0, listingRates, listingId, listingState, photoId, productId, sectionId, strainType = null, title }) => {
     try {
         await conn.query("START TRANSACTION");
 
+        const props = [hasWeights, listingState, productId, sectionId, strainType, title, photoId, listingId].filter(e => e !== undefined);
         const sql = `UPDATE     listing AS l
-                     SET        l.hasWeights = ?, l.listingState = ?, l.photoId = ?, l.productId = ?, l.sectionId = ?, l.strainType = ?, l.title = ?
+                     SET        l.hasWeights = ?, l.listingState = ?, l.productId = ?, l.sectionId = ?, l.strainType = ?, l.title = ?
+                                ${photoId !== undefined ? ", l.photoId = ?" : ""}
                      WHERE      l.listingId = ?;`;
-        await conn.query(sql, [hasWeights, listingState, photoId, productId, sectionId, strainType, title, listingId]);
+        await conn.query(sql, props);
 
         const existingRates = listingRates.filter(rate => rate.listingRateId !== undefined);
 

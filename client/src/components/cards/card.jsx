@@ -27,11 +27,15 @@ export const CardTitles = ({ title, strainType }) => (
 export const CardPrices = ({ listingRates, product }) => {
     if (!listingRates) return false;
 
+    const checkIsValid = (e) => !["", null, undefined].includes(e);
+
+    const rates = sortArray(listingRates.filter(r => checkIsValid(r.quantity) && checkIsValid(r.price)), "quantity", false, true);
+
     const totalAvailable = actions.getAvailableQuantity({ listingRates, product });
 
     return (
         <div className="prices">
-            {sortArray(listingRates, "quantity", false, true).map((rate, i) => !(rate.quantity === "" && rate.price === "") &&
+            {rates.map((rate, i) =>
                 <div key={rate.listingRateId ?? i} className={`card-price${totalAvailable < rate.quantity ? " out-of-stock" : ""}`}>
                     <span className="weight">{rate.quantity}</span>
                     <span className="price">{rate.price}</span>

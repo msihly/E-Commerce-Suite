@@ -10,9 +10,10 @@ exports.addOrder = async ({ customerId, employeeId = null, orderDate, lineItems 
                         VALUES (?, ?, ?);`;
         const [{ insertId: orderId },] = await conn.query(sql, [customerId, employeeId, orderDate]);
 
+        const props = lineItems.flatMap(({ lineItemNumber, listingId, productId, flavorId, quantity, pricePaid }) => [orderId, lineItemNumber, listingId, productId, flavorId, quantity, pricePaid]);
         sql = `INSERT INTO orderItem (orderId, lineItemNumber, listingId, productId, flavorId, quantity, pricePaid)
                     VALUES (?, ?, ?, ?, ?, ?, ?)${", (?, ?, ?, ?, ?, ?, ?)".repeat(lineItems.length - 1)};`;
-        await conn.query(sql, lineItems.flatMap(({ lineItemNumber, listingId, productId, flavorId, quantity, pricePaid }) => [orderId, lineItemNumber, listingId, productId, flavorId, quantity, pricePaid]));
+        await conn.query(sql, props);
 
         await conn.query("COMMIT");
         return orderId;
@@ -55,8 +56,7 @@ exports.getAllOrders = async () => {
     const [orders,] = await conn.query(sql);
 
     if (orders.length > 0) {
-        sql = `SELECT       *
-                FROM        orderItem;`;
+        sql = `SELECT * FROM orderItem;`;
         const [orderItems,] = await conn.query(sql);
 
         orders.forEach(order => {

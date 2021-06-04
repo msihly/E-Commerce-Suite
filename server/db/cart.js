@@ -18,11 +18,15 @@ exports.deleteCartItems = async (cartItemIds = []) => {
     return true;
 };
 
-exports.emptyCart = async (userId) => {
-    const sql = `DELETE
-                FROM        cartItem
-                WHERE       userId = ?;`;
-    await conn.query(sql, [userId]);
+exports.emptyCart = async ({ customerId, userId }) => {
+    if (!customerId && !userId) return false;
+
+    const sql = userId ? `DELETE FROM cartItem WHERE userId = ?;`
+        : `DELETE	cartItem
+           FROM		cartItem INNER JOIN customer
+                        ON cartItem.userId = customer.userId
+           WHERE	customer.customerId = ?;`;
+    await conn.query(sql, [userId ?? customerId]);
     return true;
 };
 

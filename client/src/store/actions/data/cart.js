@@ -38,7 +38,7 @@ export const checkoutOrder = ({ lineItems, history }) => handleErrors(async (dis
         headers: { "Content-Type": "application/json" }
     });
 
-    console.log(res); // DEBUG
+    // console.log(res); // DEBUG
 
     if (res?.hasErrors) {
         const { deletedItems, updatedItems, listings, products } = res;
@@ -63,7 +63,7 @@ export const checkoutOrder = ({ lineItems, history }) => handleErrors(async (dis
         dispatch(actions.productUpdated(productId, attributes));
     });
 
-    dispatch(emptyCart(history));
+    dispatch(cartEmptied());
 
     toast.success(`Order #${order.orderId} created`);
     return { success: true, order };

@@ -33,7 +33,7 @@ export const listingsUpdated = (listings) => ({
 export const createListing = ({ formData, history }) => handleErrors(async (dispatch) => {
     const res = await fetchAuthed("/api/listings", { method: "POST", body: formData });
 
-    const listing = initializeListings([res.listing])[0];
+    const listing = castObjectNumbers(res.listing, "listingRates");
     dispatch(listingCreated(listing));
 
     return { success: true, listing };
@@ -59,7 +59,7 @@ export const getListings = (history) => handleErrors(async (dispatch) => {
 export const updateListing = ({ listingId, formData, history }) => handleErrors(async (dispatch) => {
     const res = await fetchAuthed(`/api/listings/${listingId}`, { method: "PUT", body: formData });
 
-    const listing = initializeListings([res.listing])[0];
+    const listing = castObjectNumbers(res.listing, "listingRates");
     dispatch(listingUpdated(listingId, listing));
 
     return { success: true, listing };

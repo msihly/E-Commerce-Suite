@@ -7,7 +7,10 @@
         height: 0;
     }
 
-    .tab-container { height: auto; }
+    .tab-container {
+        width: inherit;
+        height: auto;
+    }
 
     .card { background-color: $black-2; }
 }

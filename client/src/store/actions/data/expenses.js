@@ -33,14 +33,14 @@ export const expensesRetrieved = (expenses) => ({
 
 export const expensesInitialized = () => ({
     type: types.EXPENSES_INITIALIZED,
-    payload: { expenses: store.getState().expenses.map(e => ({ ...e, payeeId: e.payeeId ?? null, payeeName: e.payeeId ? actions.getEmployeeFullName(e.payeeId) : "None" })) }
+    payload: { expenses: store.getState().expenses.map(e => initializeExpense(e)) }
 });
 
 /* -------------------------------- THUNKS ------------------------------- */
 export const createExpense = ({ formData, history }) => handleErrors(async (dispatch) => {
     const res = await fetchAuthed("/api/expense", { method: "POST", body: formData });
 
-    const expense = castObjectNumbers(res.expense);
+    const expense = initializeExpense(castObjectNumbers(res.expense));
     dispatch(expenseCreated(expense));
 
     toast.success("Expense created");
@@ -73,3 +73,12 @@ export const updateExpense = ({ id, formData, history }) => handleErrors(async (
     toast.success(`Expense #${id} updated`);
     return res;
 }, { hasToast: true, isAuth: true, history });
+
+/* ---------------------------------- UTILS --------------------------------- */
+export const initializeExpense = (expense) => {
+    return {
+        ...expense,
+        payeeId: expense.payeeId ?? null,
+        payeeName: expense.payeeId ? actions.getEmployeeFullName(expense.payeeId) : "None"
+    };
+};

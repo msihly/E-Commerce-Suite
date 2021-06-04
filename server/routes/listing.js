@@ -8,7 +8,7 @@ const reqs = {
     hasWeights: { type: "integer" },
     listingState: { name: "Status", isRequired: true, maxLen: 9 },
     sectionId: { type: "integer" },
-    strainType: { name: "Strain Type", maxLen: 6 },
+    strainType: { name: "Strain Type", maxLen: 9 },
     title: { name: "Title", isRequired: true, maxLen: 2083 },
     quantity: { name: "Quantity", type: "decimal" },
     price: { name: "Price", type: "decimal" }
@@ -53,32 +53,24 @@ try {
     /* ----------------------------------- PUT ---------------------------------- */
     app.put("/api/listings/:id", handleErrors(async (req, res) => {
         const refreshedAccessToken = await authenticateUser(req, true);
+
         const listingId = req.params.id;
+        const { isImageRemoved } = req.body;
 
         const { listing: updated } = validateListing(req, res, refreshedAccessToken);
         if (!updated) return;
 
-        await db.getListings({ ...req.user, listingIds: [listingId] }).then(async current => {
-            let photoId, photoUrl;
+        const listing = { ...updated, listingId };
 
-            if (req.files.length > 0) {
-                if (current.photoId == null) {
-                    const photo = await uploadPhoto(req.files[0]);
-                    [photoId, photoUrl] = [photo.photoId, photo.photoUrl];
-                } else {
-                    const currentPhoto = await db.getPhotos({ photoIds: [current.photoId] })[0];
-                    if (currentPhoto.photoHash === hash("md5", req.files[0].buffer)) [photoId, photoUrl] = [current.photoId, current.photoUrl];
-                    else {
-                        const photo = await uploadPhoto(req.files[0]);
-                        [photoId, photoUrl] = [photo.photoId, photo.photoUrl];
-                    }
-                }
-            } else if (updated.isImageRemoved) [photoId, photoUrl] = [null, null];
+        const { photoId, photoUrl } = isImageRemoved === "true" ? { photoId: null, photoUrl: null } : await uploadPhoto(req.files[0]);
+        if (isImageRemoved === "true" || req.files.length !== 0) {
+            listing.photoId = photoId;
+            listing.photoUrl = photoUrl;
+        }
 
-            const listingRates = await db.updateListing({ ...updated, listingId, photoId });
+        const listingRates = await db.updateListing(listing);
 
-            return res.send({ success: true, listing: { ...updated, listingId, listingRates, photoId, photoUrl }, refreshedAccessToken });
-        });
+        return res.send({ success: true, listing: { ...listing, listingRates }, refreshedAccessToken });
     }));
 
     /* ----------------------------------- DELETE ---------------------------------- */
